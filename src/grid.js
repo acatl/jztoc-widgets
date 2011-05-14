@@ -231,20 +231,6 @@ $.ui.uicomponent.subclass("ui.grid", {
 		$.Widget.prototype._setOption.apply(this, arguments);
 
 	},
-	_sort : function(e) {
-		var ct = $(e.currentTarget);
-
-		var isUp = $(".sortArrow", ct).hasClass("up");
-
-		$(".sortArrow", this.tableHead).removeClass("up down");
-
-		$(".sortArrow", ct).addClass(isUp ? "down" : "up");
-
-		var event = jQuery.Event("onColumnSort");
-		event.sortField = e.data.sortField;
-		$(this.element).trigger(event);
-		return false;
-	},
 	showLoading : function() {
 
 		this.table.addClass("loading");
