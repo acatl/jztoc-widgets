@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!--ant-->
+<project name="jztoc" default="all" basedir=".">
+  <property name="PREFIX" value="."/>
+  <property description="Folder for jztoc and min target" name="dist" value="${PREFIX}/build"/>
+  
+  
+  
+  <property name="JZW_FILE" value="jztoc.widgets.js"/>
+  <property name="JZW_MIN_FILE" value="jztoc.widgets.min.js"/>
+  
+  <property name="JZW" value="${dist}/${JZW_FILE}"/>  
+  <property name="JZW_MIN" value="${dist}/${JZW_MIN_FILE}"/>
+  
+  <property name="LICENSE" value="MIT-LICENSE.header.txt"/>
+  <target name="all" depends="jztocw, min, licenses, clean"/>
+  <target name="jztocw" description="Widgets jztoc build">
+    <echo message="Building ${JZW}"/>
+    <mkdir dir="${dist}"/>
+    <concat destfile="${JZW}.temp">
+      <fileset file="src/list.js"/>
+      <fileset file="src/grid.js"/>
+    </concat>
+    <echo message="${JZW} built."/>
+  </target>
+  
+  <target name="min" depends="jztocw" description="minimize jztoc widgets">
+    <echo message="Minimizing ${JZW_MIN}"/>
+    <apply executable="java" parallel="false" verbose="true" dest="${dist}">
+      <fileset dir="${dist}">
+        <include name="${JZW_FILE}.temp"/>
+      </fileset>
+      <arg line="-jar"/>
+      <arg path="closure-compiler/compiler.jar"/>
+      <arg value="--warning_level"/>
+      <arg value="QUIET"/>
+      <arg value="--js_output_file"/>
+      <targetfile/>
+      <arg value="--js"/>
+      <mapper type="glob" from="${JZW_FILE}.temp" to="${JZW_MIN_FILE}.temp"/>
+    </apply>
+    <echo message="${JZW_MIN} built."/>
+  </target>
+  
+  <target name="licenses" depends="min" description="add licenses to files">
+    <concat destfile="${JZW}">
+      <fileset file="${LICENSE}"/>
+      <fileset file="${JZW}.temp"/>
+    </concat>
+    <concat destfile="${JZW_MIN}">
+      <fileset file="${LICENSE}"/>
+      <fileset file="${JZW_MIN}.temp"/>
+    </concat>
+    <echo message="licenses applied."/>
+  </target>
+  
+  <target name="clean" depends="licenses" description="clean temp files">
+      <delete file="${JZW}.temp"/>
+      <delete file="${JZW_MIN}.temp"/>
+      <echo message="build cleaned."/>
+  </target>
+  
+</project>

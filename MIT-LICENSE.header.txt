@@ -1,0 +1,10 @@
+/*
+ * jztoc UI Widgets
+ *
+ * Copyright 2011, Acatl Pacheco
+ * Licensed under the MIT License.
+ *
+ */
+ 
+ 
+ 
