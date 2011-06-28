@@ -39,11 +39,19 @@ $.ui.document.subclass("ui.view", {
     this.elements.datagrid.grid(options);
 		this.elements.datagrid.grid("option", "dataProvider", gridData)
 
+		this.elements.removeGrid = $("#removeGrid");
+		this.elements.removeGrid.addEventListener("click", this._removeGrid_clickHandler, this);
+
   },
   
   _init: function(){
     
   },
+
+	_removeGrid_clickHandler: function(e){
+		this.elements.datagrid.grid("destroy");
+	},
+
   
   //------------------------------------------------------------------------------
   destroy: function(){

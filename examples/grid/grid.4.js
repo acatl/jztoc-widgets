@@ -1,8 +1,21 @@
+var Helper = {
+	trace: function (a) {
+		console.log(a);
+	},
+	
+	rendererFunctionPreviousVisits: function(cell, listData){
+		console.log(cell, listData);
+		$('<a href="mailto:' + listData.data + '">' +  listData.data + '</a>').appendTo(cell);		
+	}
+}
+
 $.ui.document.subclass("ui.view", {
 
   options: {
     getChildren: true
   },
+
+	_helpers: [Helper],
   
   _create: function(){
 	
@@ -24,7 +37,7 @@ $.ui.document.subclass("ui.view", {
 	      label: "E-mail",
 	      width: 200,
 	      field: "email",
-				rendererFunction: this.rendererFunction
+				rendererFunction: this.rendererFunctionPreviousVisits
 	    }, {
 	      label: "Phone",
 	      width: 200,
@@ -33,7 +46,10 @@ $.ui.document.subclass("ui.view", {
 	        if ( rowData.phone == "22-95-45") {
 	          td.css("color", "blue");
 	        }
-	      }
+	      }, 
+				labelFunction: function (rowData, columnDefinition) {
+					return rowData.phone + "%";
+				}
 	    }]
 	  }
 	

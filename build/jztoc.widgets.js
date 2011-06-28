@@ -276,7 +276,7 @@ $.ui.uicomponent.subclass("ui.grid", {
 			var tr = this._buildRow(rowIndex, rowData, this.tableBody);
 			for ( var columnIndex in this.options.columns) {
 				var columnDefinition = this.options.columns[columnIndex];
-				var td = this._buildCell(tr, rowIndex, rowIndex, rowData, columnDefinition);
+				var td = this._buildCell(tr, rowIndex, columnIndex, rowData, columnDefinition);
 				tr.append(td);
 			}
 		}

@@ -63,7 +63,7 @@ $(function(){
 });
 
 var gridData = [
-  {name:"Polo", email:"polo@email.com", phone:"22-22-34", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."},
+  {name:"Polo", email:"polo@email.com", phone:"22-22-34", description: "Lorem ipsum dolor sit\namet, <rtf>sdfgsdfg</rtf>consecte<br/>tur adipiscing elit."},
   {name:"Rafael", email:"rafa@email.com", phone:"22-34-56", description: "Nullam elementum, odio id convallis ultricies, felis felis placerat orci, vel pulvinar felis nulla vel turpis."},
   {name:"Edgar", email:"edgar@email.com", phone:"22-67-45", description: "Donec sed dui mi. Proin purus ante, suscipit ac rutrum non, lobortis et libero."},
   {name:"Luis", email:"luis@email.com", phone:"22-95-45", description: "orbi lorem velit, sodales eu cursus porta, egestas et sem."}
@@ -105,10 +105,14 @@ $.ui.itemrenderer.subclass("ui.expandrow", {
 		if(this.options.expanded==true) {
 			var trExtra = $('<tr></tr>');
 
-			$('<td colspan="4"></td>')
+			var td = $('<td colspan="4"></td>')
 			.addClass("expanded-row")
-			.appendTo(trExtra)
+			.appendTo(trExtra);
+
+			$("<textarea style='width:350px'></textarea>")
+			.appendTo(td)
 			.text(this.options.listData.data.description);
+			
 
 			trExtra.insertAfter(tr);
 			
