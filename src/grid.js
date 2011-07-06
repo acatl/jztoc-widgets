@@ -14,7 +14,15 @@ $.ui.uicomponent.subclass("ui.grid", {
 	
 	redraw: function(options){
 		if(typeof options != "undefined") {
-			this.options = options;
+			if(typeof options.columns != "undefined") {
+				this.options.columns = options.columns;
+			}
+			if(typeof options.rowFunction != "undefined") {
+				this.options.rowFunction = options.rowFunction;
+			}
+			if(typeof options.dataProvider != "undefined") {
+				this.options.dataProvider = options.dataProvider;
+			}
 		}
 		
 		if (this.options.id == null || this.options.id == "") {
