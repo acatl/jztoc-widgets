@@ -37,10 +37,13 @@ $.ui.document.subclass("ui.view", {
 	  }
 	
     this.elements.datagrid.grid(options);
-		this.elements.datagrid.grid("option", "dataProvider", gridData)
+		this.elements.datagrid.grid("option", "dataProvider", gridData);
 
 		this.elements.removeGrid = $("#removeGrid");
 		this.elements.removeGrid.addEventListener("click", this._removeGrid_clickHandler, this);
+		
+		this.elements.removeGrid = $("#rebuildGrid");
+		this.elements.removeGrid.addEventListener("click", this._rebuildGrid_clickHandler, this);
 
   },
   
@@ -50,6 +53,26 @@ $.ui.document.subclass("ui.view", {
 
 	_removeGrid_clickHandler: function(e){
 		this.elements.datagrid.grid("destroy");
+	},
+	
+	_rebuildGrid_clickHandler: function(e){
+		
+		var newOptions = {
+	    columns: [{
+	      label: "Name",
+	      field: "name"
+	    }, {
+	      label: "street",
+	      width: 200,
+	      field: "street"
+	    }, {
+	      label: "state",
+	      width: 200,
+	      field: "state"
+	    }]
+	  }		
+		this.elements.datagrid.grid("redraw", newOptions);
+		this.elements.datagrid.grid("option", "dataProvider", gridDataNewSet);
 	},
 
   
@@ -70,4 +93,12 @@ var gridData = [
   {name:"Rafael", email:"rafa@email.com", phone:"22-34-56"},
   {name:"Edgar", email:"edgar@email.com", phone:"22-67-45"},
   {name:"Luis", email:"luis@email.com", phone:"22-95-45"}
+]
+
+
+var gridDataNewSet = [
+  {name:"Juan", street:"trojes #21", state:"Colima"},
+  {name:"Eric", street:"rulfo #45", state:"Michoacan"},
+  {name:"Mario", street:"reforma #540", state:"Jalisco"},
+  {name:"Ian", street:"genoveva #212", state:"Colima"}
 ]

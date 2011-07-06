@@ -178,9 +178,9 @@ $.ui.uicomponent.subclass("ui.grid", {
 		if (this.options.id == null || this.options.id == "") {
 			this.options.id = this._guid();
 		}
-		this.table = $('<table></table>').attr("id", this.options.id).addClass('grid').appendTo(this.element);
-		this.tableHead = $('<thead></thead>').appendTo(this.table);
-		this.tableBody = $('<tbody></tbody>').appendTo(this.table);
+		this.elements.table = $('<table></table>').attr("id", this.options.id).addClass('grid').appendTo(this.element);
+		this.elements.tableHead = $('<thead></thead>').appendTo(this.elements.table);
+		this.elements.tableBody = $('<tbody></tbody>').appendTo(this.elements.table);
 		this._createTableHeader(this.options.columns);
 
 		if (this.options.dataProvider != null) {
@@ -195,7 +195,7 @@ $.ui.uicomponent.subclass("ui.grid", {
 			var th = this._createHeaderCell(tr, columnIndex, columnDefinition);
 			th.appendTo(tr);
 		}
-		tr.appendTo(this.tableHead);
+		tr.appendTo(this.elements.tableHead);
 	},
 
 	_createHeaderCell: function (tr, columnIndex, columnDefinition) {
@@ -255,7 +255,12 @@ $.ui.uicomponent.subclass("ui.grid", {
 		}
 
 		if (columnDefinition.width != null) {
-			th.css("width", columnDefinition.width);
+			try {
+				th.css("width", columnDefinition.width);
+			} 
+			catch (err) {
+				console.log(err);
+			}
 		}
 
 		if (columnDefinition.visible == false) {
@@ -267,13 +272,13 @@ $.ui.uicomponent.subclass("ui.grid", {
 	},
 
 	_updateData : function() {
-		$(this.tableBody).children().remove();
+		$(this.elements.tableBody).children().remove();
 
 		var rows = this.options.dataProvider;
 
 		for ( var rowIndex in rows) {
 			var rowData = rows[rowIndex];
-			var tr = this._buildRow(rowIndex, rowData, this.tableBody);
+			var tr = this._buildRow(rowIndex, rowData, this.elements.tableBody);
 			for ( var columnIndex in this.options.columns) {
 				var columnDefinition = this.options.columns[columnIndex];
 				var td = this._buildCell(tr, rowIndex, columnIndex, rowData, columnDefinition);
@@ -303,14 +308,7 @@ $.ui.uicomponent.subclass("ui.grid", {
 
 		td.attr("data-field", columnDefinition.field);
 
-		if (columnDefinition.width != null) {
-			try {
-				td.css("width", columnDefinition.width);
-			} 
-			catch (err) {
-				console.log(err);
-			}
-		}
+		
 
 		this._applyStyle(td, columnDefinition.style);
 		
@@ -401,17 +399,17 @@ $.ui.uicomponent.subclass("ui.grid", {
 	},
 	showLoading : function() {
 
-		this.table.addClass("loading");
+		this.elements.table.addClass("loading");
 
-		this.tableBody.animate( {
+		this.elements.tableBody.animate( {
 			opacity : 0.1
 		}, 200);
 
 	},
 	hideLoading : function()
 	{
-		this.table.removeClass("loading");
-		this.tableBody.animate({opacity : 1	}, 200);
+		this.elements.table.removeClass("loading");
+		this.elements.tableBody.animate({opacity : 1	}, 200);
 	},
 
 	_applyStyle : function(target, styleDefinition) {
@@ -435,6 +433,14 @@ $.ui.uicomponent.subclass("ui.grid", {
 
 	destroy : function() {
 		$.Widget.prototype.destroy.apply(this, arguments);
+		
+		this.element.removeClass("ui-grid");
+		
+		this.elements.table.remove();
+		
+		delete this.elements.table;
+		delete this.elements.tableBody;
+		delete this.elements.tableHead;
 	}
 
 });

@@ -7,17 +7,33 @@ $.ui.uicomponent.subclass("ui.grid", {
 
 	_create : function() {
 		this.element.addClass("ui-grid");
+		
+		this.redraw();
+	},
+	
+	
+	redraw: function(options){
+		if(typeof options != "undefined") {
+			this.options = options;
+		}
+		
 		if (this.options.id == null || this.options.id == "") {
 			this.options.id = this._guid();
 		}
+		
+		this._removeTable();
+		
 		this.elements.table = $('<table></table>').attr("id", this.options.id).addClass('grid').appendTo(this.element);
 		this.elements.tableHead = $('<thead></thead>').appendTo(this.elements.table);
 		this.elements.tableBody = $('<tbody></tbody>').appendTo(this.elements.table);
+		
+		
 		this._createTableHeader(this.options.columns);
-
 		if (this.options.dataProvider != null) {
 			this._updateData();
 		}
+		
+		console.log(this);
 	},
 
 	_createTableHeader : function(columns) {
@@ -263,16 +279,20 @@ $.ui.uicomponent.subclass("ui.grid", {
 		return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
 	},
 
+	_removeTable: function() {
+		if(typeof this.elements.table != "undefined") {
+			this.elements.table.remove();
+			delete this.elements.table;
+			delete this.elements.tableBody;
+			delete this.elements.tableHead;
+		}
+	},
+
 	destroy : function() {
 		$.Widget.prototype.destroy.apply(this, arguments);
-		
-		this.element.removeClass("ui-grid");
-		
-		this.elements.table.remove();
-		
-		delete this.elements.table;
-		delete this.elements.tableBody;
-		delete this.elements.tableHead;
-	}
+		this._removeTable();
+	},
+	
+	
 
 });
