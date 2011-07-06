@@ -299,7 +299,7 @@ $.ui.uicomponent.subclass("ui.grid", {
 	destroy : function() {
 		$.Widget.prototype.destroy.apply(this, arguments);
 		this._removeTable();
-	},
+	}
 	
 	
 

@@ -13,7 +13,9 @@
   <property name="JZW_MIN" value="${dist}/${JZW_MIN_FILE}"/>
   
   <property name="LICENSE" value="MIT-LICENSE.header.txt"/>
-  <target name="all" depends="jztocw, min, licenses, clean"/>
+  
+  <target name="all" depends="jztocw, js.remove.console, min, licenses, clean"/>
+  
   <target name="jztocw" description="Widgets jztoc build">
     <echo message="Building ${JZW}"/>
     <mkdir dir="${dist}"/>
@@ -22,6 +24,16 @@
       <fileset file="src/grid.js"/>
     </concat>
     <echo message="${JZW} built."/>
+  </target>
+  
+  
+  <target name="js.remove.console" description="Commenting out console.log lines">
+       <echo>Commenting out console.log lines..</echo> 
+       <replaceregexp match="(console.log\(.*\))" replace="/\*\1\*/" flags="g" >  
+         <fileset dir="${dist}/">  
+           <include name="**/*.temp"/>  
+         </fileset>  
+       </replaceregexp>
   </target>
   
   <target name="min" depends="jztocw" description="minimize jztoc widgets">
